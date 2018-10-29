@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title> View User Posts </title>
+	</head>
+	<body>
+		<form action="DeletePost.php" method="post">
+			
+			<?php
+				$mysqli = new mysqli("mysql.eecs.ku.edu", "z702h657", "eir3aequ", "z702h657");
+				$query = "SELECT post_id, content, author_id FROM Posts";
+				$id = -1;
+
+				if($mysqli->connect_errno)
+				{
+					printf("Connect failed: %s\n", $mysqli->connect_error);
+					exit();
+				}
+				echo "<table style=width:100%>";
+				echo "<tr><td>User</td><td>Content</td><td>Delete?</td></tr>";
+				if($result = $mysqli->query($query))
+				{
+					while ($row = $result->fetch_assoc())
+					{
+						$id = $row["post_id"];
+						echo "<tr>";
+						echo "<td>".$row["author_id"]."</td>";
+						echo "<td>".$row["content"]."</td>";
+						echo "<td><input type='checkbox' name=".$id." value='yes'></td>";
+						echo "</tr>";
+					}
+					$result->free();
+				}
+				echo "</table>";
+			?>
+
+			
+			<button type="submit">Submit</button>
+		</form>
+
+	</body>
+</html>
